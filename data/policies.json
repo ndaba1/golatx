@@ -1,0 +1,14 @@
+{
+    "stackoverflow.com": {
+        "site": "stackoverflow.com",
+        "domains": [
+            "www.stackoverflow.com"
+        ],
+        "link-class": "question-hyperlink",
+        "allow-backlinks": "true",
+        "snippets": "true",
+        "snippet-class": "some-class",
+        "seed": "https://stackoverflow.com/questions"
+    }
+
+}
