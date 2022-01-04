@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"encoding/json"
@@ -17,7 +17,7 @@ type Policy struct {
 }
 
 // TODO: Refactor the saveToDisk function
-func saveToDisk(name string, body string, dir string) {
+func SaveToDisk(name string, body string, dir string) {
 	_filename := name + ".html"
 	path := filepath.Join("./", dir, _filename)
 
@@ -26,7 +26,7 @@ func saveToDisk(name string, body string, dir string) {
 	os.WriteFile(dir+"/"+_filename, []byte(body), 0666)
 }
 
-func readJson(path string) map[string]Policy {
+func ReadJson(path string) map[string]Policy {
 	/**
 	 *Check if the path passed is valid and throw error if not
 	 *Parse the json and return it as an object
@@ -34,13 +34,13 @@ func readJson(path string) map[string]Policy {
 	pol := make(map[string]Policy)
 
 	data, err := os.ReadFile(path)
-	checkError(err)
+	CheckError(err)
 
-	checkError(json.Unmarshal(data, &pol))
+	CheckError(json.Unmarshal(data, &pol))
 	return pol
 }
 
-func checkError(err error) {
+func CheckError(err error) {
 	if err != nil {
 		panic(err)
 	}

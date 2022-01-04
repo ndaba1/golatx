@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"golatx/crawler"
 )
 
 func main() {
@@ -21,7 +23,7 @@ func main() {
 func crawlOne(link string) {
 	fmt.Println("Starting...")
 
-	Start(link)
+	crawler.Start(link)
 }
 
 func crawlFromFile(url string) {

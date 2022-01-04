@@ -1,4 +1,4 @@
-package main
+package crawler
 
 import (
 	"fmt"
@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"golatx/utils"
 
 	"github.com/gocolly/colly"
 )
@@ -24,11 +26,11 @@ func createCrawler(domains []string) *colly.Collector {
 	return c
 }
 
-func genPolicy(link string) Policy {
+func genPolicy(link string) utils.Policy {
 	domain, err := url.Parse(link)
-	checkError(err)
+	utils.CheckError(err)
 
-	policy := readJson(filepath.Join("./", "data", "policies.json"))
+	policy := utils.ReadJson(filepath.Join("./", "data", "policies.json"))
 	return policy[domain.Hostname()]
 
 	/**
@@ -38,7 +40,7 @@ func genPolicy(link string) Policy {
 	**/
 }
 
-func crawl(c *colly.Collector, link string, pol *Policy) int {
+func crawl(c *colly.Collector, link string, pol *utils.Policy) int {
 	count := 0
 
 	c.OnRequest(func(r *colly.Request) {
@@ -49,7 +51,7 @@ func crawl(c *colly.Collector, link string, pol *Policy) int {
 	c.OnResponse(func(r *colly.Response) {
 		name := strings.Split(r.FileName(), ".")[0]
 		host := r.Request.URL.Hostname()
-		saveToDisk(name, string(r.Body), host)
+		utils.SaveToDisk(name, string(r.Body), host)
 	})
 
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
