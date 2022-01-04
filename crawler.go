@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/gocolly/colly"
 )
@@ -54,14 +55,24 @@ func crawl(c *colly.Collector, link string, pol *Policy) int {
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		link := e.Attr("href")
 
-		if e.Attr("class") == pol.LinkClass {
+		if len(pol.LinkClasses) == 0 {
 			c.Visit(e.Request.AbsoluteURL(link))
+		} else {
+			for _, class := range pol.LinkClasses {
+				if e.Attr("class") == class {
+					c.Visit(e.Request.AbsoluteURL(link))
+				}
+			}
 		}
-		// c.Visit(e.Request.AbsoluteURL(link))
+
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
 		fmt.Println("Error:", r.StatusCode, err)
+	})
+
+	c.Limit(&colly.LimitRule{
+		RandomDelay: 5 * time.Second,
 	})
 
 	c.Visit(link)

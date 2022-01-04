@@ -9,7 +9,7 @@ import (
 type Policy struct {
 	Site           string   `json:"site"`
 	Domains        []string `json:"domains"`
-	LinkClass      string   `json:"link-class"`
+	LinkClasses    []string `json:"link-classes"`
 	AllowBacklinks string   `json:"allow-backlinks"`
 	Snippets       string   `json:"snippets"`
 	SnippetClass   string   `json:"snippet-class"`

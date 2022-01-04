@@ -5,11 +5,23 @@
             "stackoverflow.com",
             "www.stackoverflow.com"
         ],
-        "link-class": "question-hyperlink",
+        "link-classes": ["question-hyperlink"],
         "allow-backlinks": "true",
         "snippets": "true",
         "snippet-class": "some-class",
         "seed": "https://stackoverflow.com/questions"
+    },
+    "geeksforgeeks.org": {
+        "site": "geeksforgeeks.org",
+        "domains": [
+            "geeksforgeeks.org",
+            "www.geeksforgeeks.org"
+        ],
+        "link-classes": ["c-wrap"],
+        "allow-backlinks": "true",
+        "snippets": "true",
+        "snippet-class": "code-block",
+        "seed": "https://www.geeksforgeeks.org/using-waitgroup-in-golang/"
     }
 
 }

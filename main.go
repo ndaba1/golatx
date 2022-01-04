@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/url"
 	"os"
 )
 
@@ -20,13 +19,9 @@ func main() {
 }
 
 func crawlOne(link string) {
-	u, err := url.Parse(link)
-	checkError(err)
-
 	fmt.Println("Starting...")
 
-	crawler := createCrawler([]string{u.Hostname()})
-	crawl(crawler, link)
+	Start(link)
 }
 
 func crawlFromFile(url string) {
