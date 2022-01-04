@@ -2,6 +2,7 @@
     "stackoverflow.com": {
         "site": "stackoverflow.com",
         "domains": [
+            "stackoverflow.com",
             "www.stackoverflow.com"
         ],
         "link-class": "question-hyperlink",

@@ -2,10 +2,17 @@ package main
 
 import (
 	"fmt"
+	"net/url"
+	"path/filepath"
 	"strings"
 
 	"github.com/gocolly/colly"
 )
+
+func Start(link string) int {
+	pol := genPolicy(link)
+	return crawl(createCrawler(pol.Domains), link, &pol)
+}
 
 func createCrawler(domains []string) *colly.Collector {
 	c := colly.NewCollector(
@@ -16,7 +23,21 @@ func createCrawler(domains []string) *colly.Collector {
 	return c
 }
 
-func crawl(c *colly.Collector, link string) int {
+func genPolicy(link string) Policy {
+	domain, err := url.Parse(link)
+	checkError(err)
+
+	policy := readJson(filepath.Join("./", "data", "policies.json"))
+	return policy[domain.Hostname()]
+
+	/**
+	 *Receive the json and parse it, then convert it into a struct
+	 *Return the struct with each of the fields mapped accordingly
+	 *This function should run before crawl func since latter depends on former
+	**/
+}
+
+func crawl(c *colly.Collector, link string, pol *Policy) int {
 	count := 0
 
 	c.OnRequest(func(r *colly.Request) {
@@ -33,14 +54,14 @@ func crawl(c *colly.Collector, link string) int {
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		link := e.Attr("href")
 
-		if e.Attr("class") == "question-hyperlink" {
+		if e.Attr("class") == pol.LinkClass {
 			c.Visit(e.Request.AbsoluteURL(link))
 		}
-		c.Visit(e.Request.AbsoluteURL(link))
+		// c.Visit(e.Request.AbsoluteURL(link))
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
-		fmt.Println("error:", r.StatusCode, err)
+		fmt.Println("Error:", r.StatusCode, err)
 	})
 
 	c.Visit(link)
